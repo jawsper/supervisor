@@ -941,7 +941,7 @@ class ServerOptions(Options):
             if port is None:
                 raise ValueError('section [%s] has no port value' % section)
             host, port = inet_address(port)
-            config['host'] = host
+            config['host'] = get(section, 'host', host)
             config['port'] = port
             config['section'] = section
             configs.append(config)
