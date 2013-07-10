@@ -530,11 +530,17 @@ class supervisor_af_inet_http_server(supervisor_http_server):
     def __init__(self, ip, port, logger_object):
         self.ip = ip
         self.port = port
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        
+        try:
+            addrinfo = socket.getaddrinfo(ip, port, 0, socket.SOCK_STREAM)[0]
+        except:
+            addrinfo = (socket.AF_INET, socket.SOCK_STREAM, 0, '', (ip, port))
+        
+        sock = socket.socket( *addrinfo[0:2] )
         self.prebind(sock, logger_object)
-        self.bind((ip, port))
+        self.bind(addrinfo[4])
 
-        host, port = self.socket.getsockname()
+        host, port = self.socket.getsockname()[0:2]
         if not ip:
             self.log_info('Computing default hostname', 'warning')
             hostname = socket.gethostname()
