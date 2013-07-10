@@ -1,0 +1,4 @@
+include supervisor/version.txt
+include supervisor/skel/sample.conf
+include supervisor/ui/*
+include supervisor/ui/*/*
